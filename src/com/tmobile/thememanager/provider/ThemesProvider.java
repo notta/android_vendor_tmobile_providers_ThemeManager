@@ -16,6 +16,7 @@
 
 package com.tmobile.thememanager.provider;
 
+import com.android.internal.util.ArrayUtils;
 import com.tmobile.thememanager.Constants;
 import com.tmobile.thememanager.R;
 import com.tmobile.thememanager.utils.DatabaseUtilities;
@@ -51,10 +52,14 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
 
 /**
  * Provider
@@ -426,28 +431,82 @@ public class ThemesProvider extends ContentProvider {
         return notifyChanges;
     }
 
+    static int[] sDensityBuckets = new int[]{
+            DisplayMetrics.DENSITY_LOW,
+            DisplayMetrics.DENSITY_MEDIUM,
+            DisplayMetrics.DENSITY_TV,
+            DisplayMetrics.DENSITY_HIGH,
+            DisplayMetrics.DENSITY_XHIGH,
+            DisplayMetrics.DENSITY_XXHIGH,
+            DisplayMetrics.DENSITY_XXXHIGH,
+    };
+
     private static boolean hasHostDensity(Context context, PackageInfo pi, ThemeInfo ti) {
         try {
             Resources res = context.createPackageContext(pi.packageName, 0).getResources();
+            XmlPullParser parser = null;
+            int resId = res.getIdentifier("android", "xml", pi.packageName);
+            if (resId != 0) {
+                parser = res.getXml(resId);
+                int eventType = parser.getEventType();
+                do {
+                    if (eventType != XmlPullParser.TEXT) {
+                        continue;
+                    }
 
-            /*
-             * We don't need to actually read the bitmap, only look up the entry
-             * in the resources table and examine the density with which the
-             * AssetManager responded.
-             */
-            TypedValue outValue = new TypedValue();
-            res.getValue(ti.previewResourceId, outValue, true);
-            int density = (outValue.density == TypedValue.DENSITY_DEFAULT) ?
-                    DisplayMetrics.DENSITY_DEFAULT : outValue.density;
-            return density == res.getDisplayMetrics().densityDpi;
-        } catch (NotFoundException e) {
-            Log.w(TAG, "Missing required resource in package " + pi.packageName + ": " +
-                    e.getMessage());
-            return false;
+                    String value = parser.getText();
+                    if (TextUtils.isEmpty(value) || !value.contains("@drawable")) {
+                        continue;
+                    }
+
+                    int index = value.indexOf("/");
+                    if (index == -1) {
+                        break;
+                    }
+
+                    String name = value.substring(index + 1);
+                    if (TextUtils.isEmpty(name)) {
+                        break;
+                    }
+
+                    TypedValue outValue = new TypedValue();
+                    int id = res.getIdentifier(name, "drawable", pi.packageName);
+                    if (id == 0) {
+                        continue;
+                    }
+
+                    res.getValue(id, outValue, true);
+                    int deviceDensity = res.getDisplayMetrics().densityDpi;
+                    int themeResourceDensity = (outValue.density == TypedValue.DENSITY_DEFAULT) ?
+                            DisplayMetrics.DENSITY_DEFAULT : outValue.density;
+                    if (deviceDensity == themeResourceDensity) {
+                        return true;
+                    } else {
+                        int deviceDensityIndex = Arrays.binarySearch(sDensityBuckets, deviceDensity);
+                        return themeResourceDensity == sDensityBuckets[deviceDensityIndex - 1]
+                                || themeResourceDensity == sDensityBuckets[deviceDensityIndex + 1];
+                    }
+                } while ((eventType = parser.next()) != XmlPullParser.END_DOCUMENT);
+            } else {
+                /*
+                 * We don't need to actually read the bitmap, only look up the entry
+                 * in the resources table and examine the density with which the
+                 * AssetManager responded.
+                 */
+                TypedValue outValue = new TypedValue();
+                res.getValue(ti.previewResourceId, outValue, true);
+                int density = (outValue.density == TypedValue.DENSITY_DEFAULT) ?
+                        DisplayMetrics.DENSITY_DEFAULT : outValue.density;
+                return density == res.getDisplayMetrics().densityDpi;
+            }
+        } catch (IOException e) {
+            Log.w(TAG, "Parsing IO exception", e);
+        } catch (XmlPullParserException e) {
+            Log.w(TAG, "Parsing exception occured", e);
         } catch (NameNotFoundException e) {
             Log.w(TAG, "Possible package manager race condition detected?", e);
-            return false;
         }
+        return false;
     }
 
     private static boolean hasThemePackageScope(Context context, PackageInfo pi, ThemeInfo ti) {
