@@ -441,6 +441,29 @@ public class ThemesProvider extends ContentProvider {
             DisplayMetrics.DENSITY_XXXHIGH,
     };
 
+    private static int getDeviceBucketIndex(Resources res) {
+        int deviceDensity = res.getDisplayMetrics().densityDpi;
+        int closestIndex = 0;
+        int min = Integer.MAX_VALUE;
+        for (int i = 0; i < sDensityBuckets.length; i++) {
+            int bucket = sDensityBuckets[i];
+            if (deviceDensity == bucket) {
+                closestIndex = i;
+                break;
+            } else {
+                int diff = Math.abs(deviceDensity - bucket);
+                if (diff < min) {
+                    min = diff;
+                    closestIndex = i;
+                }
+            }
+            if (bucket > deviceDensity) {
+                break;
+            }
+        }
+        return closestIndex;
+    }
+
     private static boolean hasHostDensity(Context context, PackageInfo pi, ThemeInfo ti) {
         try {
             Resources res = context.createPackageContext(pi.packageName, 0).getResources();
@@ -488,9 +511,18 @@ public class ThemesProvider extends ContentProvider {
                     if (deviceDensity == themeResourceDensity) {
                         return true;
                     } else {
-                        int deviceDensityIndex = Arrays.binarySearch(sDensityBuckets, deviceDensity);
-                        return themeResourceDensity == sDensityBuckets[deviceDensityIndex - 1]
-                                || themeResourceDensity == sDensityBuckets[deviceDensityIndex + 1];
+                        int deviceBucketIndex = getDeviceBucketIndex(res);
+                        boolean providesHigherDensityBucket = false;
+                        boolean providesLowerDensityBucket = false;
+                        if (deviceBucketIndex != sDensityBuckets.length - 1) {
+                            providesHigherDensityBucket =
+                                    themeResourceDensity == sDensityBuckets[deviceBucketIndex + 1];
+                        }
+                        if (deviceBucketIndex != 0) {
+                            providesLowerDensityBucket =
+                                    themeResourceDensity == sDensityBuckets[deviceBucketIndex - 1];
+                        }
+                        return providesHigherDensityBucket || providesLowerDensityBucket;
                     }
                 } while ((eventType = parser.next()) != XmlPullParser.END_DOCUMENT);
             } else {
