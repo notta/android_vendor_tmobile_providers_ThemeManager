@@ -447,7 +447,13 @@ public class ThemesProvider extends ContentProvider {
             XmlPullParser parser = null;
             int resId = res.getIdentifier("android", "xml", pi.packageName);
             if (resId != 0) {
-                parser = res.getXml(resId);
+                try {
+                    parser = res.getXml(resId);
+                } catch (NotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (parser != null) {
                 int eventType = parser.getEventType();
                 do {
                     if (eventType != XmlPullParser.TEXT) {
