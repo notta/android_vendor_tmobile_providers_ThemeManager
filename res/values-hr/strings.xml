@@ -17,9 +17,7 @@
      limitations under the License.
 -->
 <resources>
-  <string name="app_name">Dostawca motywów</string>
-  <string name="permlab_access_DrmThemeResources">odczytywanie zasobów mediów z zabezpieczeniami DRM</string>
-  <string name="permdesc_access_DrmThemeResources">Pozwala aplikacji na odczytywanie zawartych w pakietach motywów zasobów mediów z zabezpieczeniami DRM.</string>
-  <string name="permlab_set_theme">ustawianie ogólnego motywu</string>
-  <string name="permdesc_set_theme" product="tablet">Pozwala aplikacji na zmienianie wizualnego motywu tego tabletu.</string>
+  <string name="app_name">Pružatelj tema</string>
+  <string name="permlab_access_DrmThemeResources">čitanje DRM-zaštićenih resursa medija</string>
+  <string name="permlab_set_theme">Postavi globalnu temu</string>
 </resources>

@@ -17,9 +17,10 @@
      limitations under the License.
 -->
 <resources>
-  <string name="app_name">Dostawca motywów</string>
-  <string name="permlab_access_DrmThemeResources">odczytywanie zasobów mediów z zabezpieczeniami DRM</string>
-  <string name="permdesc_access_DrmThemeResources">Pozwala aplikacji na odczytywanie zawartych w pakietach motywów zasobów mediów z zabezpieczeniami DRM.</string>
-  <string name="permlab_set_theme">ustawianie ogólnego motywu</string>
-  <string name="permdesc_set_theme" product="tablet">Pozwala aplikacji na zmienianie wizualnego motywu tego tabletu.</string>
+  <string name="app_name">テーマプロバイダ</string>
+  <string name="permlab_access_DrmThemeResources">DRM保護されたメディアリソースの読み取り</string>
+  <string name="permdesc_access_DrmThemeResources">テーマパッケージのDRM保護されたメディアリソースの読み取りをアプリに許可します。</string>
+  <string name="permlab_set_theme">全体のテーマの設定</string>
+  <string name="permdesc_set_theme" product="tablet">タブレットのビジュアルテーマの変更をアプリに許可します。</string>
+  <string name="permdesc_set_theme" product="default">携帯電話のビジュアルテーマの変更をアプリに許可します。</string>
 </resources>
