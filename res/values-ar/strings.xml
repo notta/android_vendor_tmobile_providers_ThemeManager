@@ -17,10 +17,10 @@
      limitations under the License.
 -->
 <resources>
-  <string name="app_name">Dostawca motywów</string>
-  <string name="permlab_access_DrmThemeResources">odczytywanie zasobów mediów z zabezpieczeniami DRM</string>
-  <string name="permdesc_access_DrmThemeResources">Pozwala aplikacji na odczytywanie zawartych w pakietach motywów zasobów mediów z zabezpieczeniami DRM.</string>
-  <string name="permlab_set_theme">ustawianie ogólnego motywu</string>
-  <string name="permdesc_set_theme" product="tablet">Pozwala aplikacji na zmienianie wizualnego motywu tego tabletu.</string>
-  <string name="permdesc_set_theme" product="default">Pozwala aplikacji na zmienianie wizualnego motywu tego telefonu.</string>
+  <string name="app_name">موفر المواضيع</string>
+  <string name="permlab_access_DrmThemeResources">قراءة موارد الوسائط المحمية DRM</string>
+  <string name="permdesc_access_DrmThemeResources">يسمح التطبيق لقراءة الوسائط المحمية DRM لي موارد حزم موضوع.</string>
+  <string name="permlab_set_theme">تعيين السمة العالمية</string>
+  <string name="permdesc_set_theme" product="tablet">يسمح التطبيق لتغيير السمة المرئية للكمبيوتر اللوحي الخاص بك.</string>
+  <string name="permdesc_set_theme" product="default">يسمح التطبيق لتغيير السمة المرئية التلفون الخاص بك.</string>
 </resources>

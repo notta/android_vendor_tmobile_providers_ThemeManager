@@ -19,5 +19,8 @@
 <resources>
   <string name="app_name">Pružatelj tema</string>
   <string name="permlab_access_DrmThemeResources">čitanje DRM-zaštićenih resursa medija</string>
+  <string name="permdesc_access_DrmThemeResources">Dozvoljava aplikaciji čitanje DRM-zaštićenih resursa medija paketa tema.</string>
   <string name="permlab_set_theme">Postavi globalnu temu</string>
+  <string name="permdesc_set_theme" product="tablet">Dozvoljava aplikaciji promjenu vizualne teme vašega tableta.</string>
+  <string name="permdesc_set_theme" product="default">Dozvoljava aplikaciji promjenu vizualne teme vašega telefona.</string>
 </resources>

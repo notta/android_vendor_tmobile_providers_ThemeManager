@@ -17,10 +17,10 @@
      limitations under the License.
 -->
 <resources>
-  <string name="app_name">Dostawca motywów</string>
-  <string name="permlab_access_DrmThemeResources">odczytywanie zasobów mediów z zabezpieczeniami DRM</string>
-  <string name="permdesc_access_DrmThemeResources">Pozwala aplikacji na odczytywanie zawartych w pakietach motywów zasobów mediów z zabezpieczeniami DRM.</string>
-  <string name="permlab_set_theme">ustawianie ogólnego motywu</string>
-  <string name="permdesc_set_theme" product="tablet">Pozwala aplikacji na zmienianie wizualnego motywu tego tabletu.</string>
-  <string name="permdesc_set_theme" product="default">Pozwala aplikacji na zmienianie wizualnego motywu tego telefonu.</string>
+  <string name="app_name">Temų tiekėjas</string>
+  <string name="permlab_access_DrmThemeResources">Skaityti apsaugotus DRM medijos išteklius</string>
+  <string name="permdesc_access_DrmThemeResources">Leidžia programoms skaityti apsaugotus DRM medijos išteklių paketus.</string>
+  <string name="permlab_set_theme">Nustatyti temą</string>
+  <string name="permdesc_set_theme" product="tablet">Leidžia programai keisti temą planšetiniame kompiuteryje.</string>
+  <string name="permdesc_set_theme" product="default">Leidžia programai keisti temą telefone.</string>
 </resources>
